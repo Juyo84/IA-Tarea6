@@ -103,7 +103,7 @@ def algoritmo(valor_h, datos):
     return (list([capacidad_Actual, beneficio, nodos_Factibles]))
 
 #REALIZA n ITERACIONES
-for iteraciones in range(1,2,1):
+for iteraciones in range(1,10,1):
     for filename in os.listdir(folder + 'low-dimensional\\'):
         if filename.endswith(".csv"):
             nombre = filename.split('_')
@@ -111,6 +111,7 @@ for iteraciones in range(1,2,1):
             start_time = time.time()
             resultado = algoritmo(beneficio_peso(datos), datos)
             #print("-------------------------------------------------------------------------")
-            print("Capacidad: " + str(resultado[0]) + "      Beneficio: " + str(resultado[1]) + "       Nodos: " + str(resultado[2]))
             runtime = time.time() - start_time
+            print("Capacidad: " + str(resultado[0]) + "      Beneficio: " + str(resultado[1]) + "       Nodos: "
+                  + str(resultado[2]) + "        Runtime: " + str(runtime))
             datos = []
