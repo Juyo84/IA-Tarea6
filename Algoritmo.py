@@ -45,7 +45,7 @@ def beneficio_peso(datos):
 
 def algoritmo(valor_h, datos):
     
-    capacidad_Maxima = float(datos[3][0])     #   CAPACIDAD MAXIMA DEL PROBLEMA
+    capacidad_Maxima = float(datos[3][0])   #   CAPACIDAD MAXIMA DEL PROBLEMA
     nodos_Factibles = []                    #   NODOS QUE YA SE VISITARON Y SON FACTIBLES
     nodos = datos[0]                        #   NODOS QUE AUN NO SE VISITAN
     nodo_Aceptado = 0                       #   NODO ACEPTADO EN LA ITERACION
@@ -63,17 +63,24 @@ def algoritmo(valor_h, datos):
     nodos.pop(0)                            #   ELIMINA EL NODO 0 DE LOS NODOS DISPONIBLES
 
     #VISITA TODOS LOS NODOS POSIBLES
-    for mov_Nodos in range(0, iteraciones, 1):
+    for _ in range(0, iteraciones, 1):
         
         #VERIFICA SI SE PUEDE MOVER AL NODO
         for iteracion in range (0, len(nodos),1):
             
-            #CHECA SI NO SE PASA DE LA CAPACIDAD Y SI TIENE MAS VALOR h(x) AL NODO ACEPTADO
-            if(((float(datos[2][nodos[iteracion]]) + capacidad_Actual) <= capacidad_Maxima) and
-               (valor_h[nodos[iteracion]] > valor_h[nodo_Aceptado])):
+            #CAMBIA EL NODO 0 AL NODO FACTIBLE DE LA LISTA PARA REALIZAR EL ELSE
+            if((nodo_Aceptado == 0) and (float(datos[2][nodos[iteracion]]) + capacidad_Actual) <= capacidad_Maxima):
                 
                 nodo_Aceptado = nodos[iteracion]
-        
+
+            else:
+                
+                #CHECA SI NO SE PASA DE LA CAPACIDAD Y SI TIENE MENOR VALOR f(x) AL NODO ACEPTADO
+                if(((float(datos[2][nodos[iteracion]]) + capacidad_Actual) <= capacidad_Maxima) and
+                    (valor_h[nodos[iteracion]] < valor_h[nodo_Aceptado])):
+                
+                    nodo_Aceptado = nodos[iteracion]      
+            
         #VERIFICA SI SE ENCONTRO UN NODO FACTIBLE
         if(nodo_Aceptado != 0):
 
@@ -103,15 +110,18 @@ def algoritmo(valor_h, datos):
     return (list([capacidad_Actual, beneficio, nodos_Factibles]))
 
 #REALIZA n ITERACIONES
-for iteraciones in range(1,10,1):
+for iteraciones in range(1,500,1):
     for filename in os.listdir(folder + 'low-dimensional\\'):
         if filename.endswith(".csv"):
             nombre = filename.split('_')
-            datos = asignar_Instancias(filename) #PASAMOS LAS INSTANCIAS A UNA VARIABLE
+            datos = asignar_Instancias(filename)    #  PASAMOS LAS INSTANCIAS A UNA VARIABLE
             start_time = time.time()
             resultado = algoritmo(beneficio_peso(datos), datos)
-            #print("-------------------------------------------------------------------------")
             runtime = time.time() - start_time
+            
+            #SE IMPRIME LOS RESULTADOS
+            #print("-------------------------------------------------------------------------")
             print("Capacidad: " + str(resultado[0]) + "      Beneficio: " + str(resultado[1]) + "       Nodos: "
-                  + str(resultado[2]) + "        Runtime: " + str(runtime))
+                  + str(resultado[2]) + "        Runtime: " + str(runtime) + "\n")
+            
             datos = []
