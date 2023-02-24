@@ -3,7 +3,7 @@ import os
 import time
 from os import system
 
-folder = 'C:\\Users\\HP\\Documents\\instancias\\'
+folder = 'C:\\Users\\HP\\Documents\\IA-Tarea3\\'    #   DIRECCION DEL FOLDER "low-dimensional"
 datos = []
 kmin = 1
 
@@ -39,13 +39,13 @@ def beneficio_peso(datos):
 
     for nodos in range(1, len(datos[0]), 1):
         
-        valor_h.append(int(datos[1][nodos]) + int(datos[2][nodos]))
+        valor_h.append(float(datos[1][nodos]) + float(datos[2][nodos]))
 
     return valor_h
 
 def algoritmo(valor_h, datos):
     
-    capacidad_Maxima = int(datos[3][0])     #   CAPACIDAD MAXIMA DEL PROBLEMA
+    capacidad_Maxima = float(datos[3][0])     #   CAPACIDAD MAXIMA DEL PROBLEMA
     nodos_Factibles = []                    #   NODOS QUE YA SE VISITARON Y SON FACTIBLES
     nodos = datos[0]                        #   NODOS QUE AUN NO SE VISITAN
     nodo_Aceptado = 0                       #   NODO ACEPTADO EN LA ITERACION
@@ -69,7 +69,7 @@ def algoritmo(valor_h, datos):
         for iteracion in range (0, len(nodos),1):
             
             #CHECA SI NO SE PASA DE LA CAPACIDAD Y SI TIENE MAS VALOR h(x) AL NODO ACEPTADO
-            if(((int(datos[2][nodos[iteracion]]) + capacidad_Actual) <= capacidad_Maxima) and
+            if(((float(datos[2][nodos[iteracion]]) + capacidad_Actual) <= capacidad_Maxima) and
                (valor_h[nodos[iteracion]] > valor_h[nodo_Aceptado])):
                 
                 nodo_Aceptado = nodos[iteracion]
@@ -84,11 +84,11 @@ def algoritmo(valor_h, datos):
             nodos.remove(nodo_Aceptado)
 
             #HACE LA SUMA DEL BENEFICIO Y LA CAPACIDAD DEL NODO ACEPTADO
-            beneficio += int(datos[1][nodo_Aceptado])
-            capacidad_Actual += int(datos[2][nodo_Aceptado])
+            beneficio += float(datos[1][nodo_Aceptado])
+            capacidad_Actual += float(datos[2][nodo_Aceptado])
 
             #IMPRIME RESUMEN DE LA ITERACION
-            print("Nodo Actual: " + str(nodo_Aceptado) + "      Beneficio: " + str(beneficio) + "       Capacidad: " + str(capacidad_Actual))
+            #print("Nodo Actual: " + str(nodo_Aceptado) + "      Beneficio: " + str(beneficio) + "       Capacidad: " + str(capacidad_Actual))
 
             #REINICIA EL NODO PARA LA NUEVA ITERACION
             nodo_Aceptado = 0
@@ -110,7 +110,7 @@ for iteraciones in range(1,2,1):
             datos = asignar_Instancias(filename) #PASAMOS LAS INSTANCIAS A UNA VARIABLE
             start_time = time.time()
             resultado = algoritmo(beneficio_peso(datos), datos)
-            print("-------------------------------------------------------------------------")
+            #print("-------------------------------------------------------------------------")
             print("Capacidad: " + str(resultado[0]) + "      Beneficio: " + str(resultado[1]) + "       Nodos: " + str(resultado[2]))
             runtime = time.time() - start_time
             datos = []
